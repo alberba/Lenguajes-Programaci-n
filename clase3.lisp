@@ -58,12 +58,3 @@
         (t (minim (cdr L)))
     )
 )
-
-(defun ordena (L)
-    (cond 
-        ((null L) nil)
-        (t 
-            (cons (minim L) (ordena (esborra (minim L) L)))
-        )
-    )
-)
