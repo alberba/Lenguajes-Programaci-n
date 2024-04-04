@@ -117,3 +117,11 @@
             (t (cons (car L) (insereix a (- num 1) (cdr L))))
         )
     )
+
+    (defun canvia (a num L)
+        (cond
+            ((null L) (list a))
+            ((= num 1) (cons a (cdr L)))
+            (t (cons (car L) (insereix a (- num 1) (cdr L))))
+        )
+    )
