@@ -33,29 +33,36 @@ primeros([[X|SINTRANS]|RESTOFILAS], [X|RCOLUMNA], [SINTRANS|RESTOSINTRANS]) :-
 % Predicado para resolver el problema de las ciudades
 ciutats(O,E,N,S, LFILAS) :-
     % Obtenemos el número de filas de la matriz
-    length(O, NFILAS), 
-    rango(NFILAS, FILAPARAPERMUTAR), 
-    permutar_filas(NFILAS, FILAPARAPERMUTAR, LFILAS),
+    length(O, NFILAS),
+    length(N, NCOLUMNAS),
+    (NFILAS < NCOLUMNAS,
+        rango(NFILAS, FILAPARAPERMUTAR),
+        permutar_filas(NFILAS, FILAPARAPERMUTAR, LFILAS),
+        % Verificamos los edificios visibles desde el oeste
+        verEdificiosLado(O, LFILAS),
+
+        % Invertimos las filas de la matriz para obtener la vista sobre el este
+        invertirListas(LFILAS, LFILASINVERTIDA),
+        % Verificamos los edificios visibles desde el este
+        verEdificiosLado(E, LFILASINVERTIDA),
+
+        % Transponemos la matriz original para obtener la vista sobre el norte
+        transponerMatriz(LFILAS, LTRANS),
+        % Verificamos que todas las columnas tengan elementos únicos
+        todos_diferentesMatriz(LTRANS),
+        % Verificamos los edificios visibles desde el norte
+        verEdificiosLado(N, LTRANS), 
+
+        % Obtenemos la vista sobre el sur
+        invertirListas(LTRANS, LTRANSINVERTIDA), 
+        % Verificamos los edificios visibles desde el sur
+        verEdificiosLado(S, LTRANSINVERTIDA)
+    );
     
-    % Verificamos los edificios visibles desde el oeste
-    verEdificiosLado(O, LFILAS), 
-
-    % Invertimos las filas de la matriz para obtener la vista sobre el este
-    invertirListas(LFILAS, LFILASINVERTIDA), 
-    % Verificamos los edificios visibles desde el este
-    verEdificiosLado(E, LFILASINVERTIDA), 
-
-    % Transponemos la matriz original para obtener la vista sobre el norte
-    transponerMatriz(LFILAS, LTRANS),
-    % Verificamos que todas las columnas tengan elementos únicos
-    todos_diferentesMatriz(LTRANS),
-    % Verificamos los edificios visibles desde el norte
-    verEdificiosLado(N, LTRANS), 
-
-    % Obtenemos la vista sobre el sur
-    invertirListas(LTRANS, LTRANSINVERTIDA), 
-    % Verificamos los edificios visibles desde el sur
-    verEdificiosLado(S, LTRANSINVERTIDA). 
+    % En caso de que el número de filas sea mayor o igual al número de columnas, 
+    % actuamos como si las filas fueran las columnas y viceversa y luego transponemos el resultado.
+    ciutats(N, S, O, E, LTRANS),
+    transponerMatriz(LTRANS, LFILAS).
     
     
 % verEdificiosLado(), calcula el número de edificios visibles desde la izquierda para cada fila de una matriz.
