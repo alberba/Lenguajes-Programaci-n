@@ -51,3 +51,19 @@
         (t )
     )
 )
+
+(defun menor(l x)
+    (cond 
+        ((null l) nil)
+        ((< (car l) x) (cons (car l) (menor (cdr l) x)))
+        (t (menor (cdr l) x))
+    )
+)
+
+(defun menor-major (x y z i)
+    (cond
+        ((and (and (< z x) (< i x))
+                (and(> z y) (> i y))) t)
+        (t nil)
+    )
+)

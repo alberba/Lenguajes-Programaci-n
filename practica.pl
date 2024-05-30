@@ -1,3 +1,10 @@
+% Autores: Sergi Oliver y Albert Salom
+
+% Soluciones al problema de las ciudades:
+% - ciutats([3,3,1,2],[1,1,2,2],[3,3,2],[2,1,3],[F1,F2,F3,F4]) -> ([1, 2, 3],[2, 3, 4],[4, 1, 2],[3, 4, 1])
+% - ciutats([2,1], [1,2], [2,1], [1,2], [F1,F2]). -> ([1, 2],[2, 1])
+% - ciutats([2,2,1,3], [3,1,3,2], [3,1,2,2], [2,3,1,2], [F1,F2,F3,F4]) -> ([2, 4, 3, 1],[3, 1, 2, 4],[4, 3, 1, 2],[1, 2, 4, 3]
+
 % Predicado base para verEdificios. Si la lista está vacía, el número de edificios visibles es 0
 verEdificios([], 0, _).
 
@@ -35,8 +42,9 @@ ciutats(O,E,N,S, LFILAS) :-
     % Obtenemos el número de filas de la matriz
     length(O, NFILAS),
     length(N, NCOLUMNAS),
-    (NFILAS < NCOLUMNAS,
-        rango(NFILAS, FILAPARAPERMUTAR),
+    NFILAS =< NCOLUMNAS,
+    	!,
+        rango(NCOLUMNAS, FILAPARAPERMUTAR),
         permutar_filas(NFILAS, FILAPARAPERMUTAR, LFILAS),
         % Verificamos los edificios visibles desde el oeste
         verEdificiosLado(O, LFILAS),
@@ -56,8 +64,7 @@ ciutats(O,E,N,S, LFILAS) :-
         % Obtenemos la vista sobre el sur
         invertirListas(LTRANS, LTRANSINVERTIDA), 
         % Verificamos los edificios visibles desde el sur
-        verEdificiosLado(S, LTRANSINVERTIDA)
-    );
+        verEdificiosLado(S, LTRANSINVERTIDA);
     
     % En caso de que el número de filas sea mayor o igual al número de columnas, 
     % actuamos como si las filas fueran las columnas y viceversa y luego transponemos el resultado.
@@ -111,14 +118,14 @@ invertir([X|L1], L2) :- invertir(L1, L3),
     unirListas(L3, [X], L2).
 
 % A partir de el número de filas (y columnas) de una matriz, se crea posibles soluciones permutando las filas.
-permutar_filas(0, _, []).
+permutar_filas(0, _, []):- !.
 permutar_filas(N, FILAPARAPERMUTAR, [Y|L1]) :-
     permutar(FILAPARAPERMUTAR, Y),
     N1 is N-1,
     permutar_filas(N1, FILAPARAPERMUTAR, L1).
 
 % Devuelve una lista con los números de 1 a N
-rango(0, []).
+rango(0, []):- !.
 rango(N, [N|L]) :- N1 is N-1, rango(N1, L).
 
 % Inserta un elemento en una lista

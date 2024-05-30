@@ -1,3 +1,5 @@
+; Autores: Sergi Oliver Juárez y Albert Salom Vanrell
+
 ;---------------------------------------------------------------------------
 (defun inicia ()
     (inicializarProps)
